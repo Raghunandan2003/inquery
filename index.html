@@ -1219,7 +1219,7 @@
           <div class="c-icon">📧</div>
           <div class="c-info">
             <span>Email</span>
-            <strong>inquerysystem@gmail.com</strong>
+            <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1a73746b6f7f68636963696e7f775a7d777b737634797577">[email&#160;protected]</a></strong>
           </div>
         </div>
         <div class="contact-item reveal">
@@ -1240,42 +1240,55 @@
     </div>
 
     <div class="contact-form reveal">
-      <div class="form-row">
-        <div class="form-group">
-          <label>Your Name</label>
-          <input type="text" placeholder="Ravi Kumar">
+      <!-- Hidden iframe to prevent page redirect on submit -->
+      <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+      <form id="contactForm"
+        action="https://docs.google.com/forms/d/e/1FAIpQLSe8pHnD8aKAFI8dIgjnNiHV9QLJZaeft4R1a0hJUka-rz8J4A/formResponse"
+        method="POST"
+        target="hidden_iframe"
+        onsubmit="handleSubmit(event)">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name *</label>
+            <input type="text" name="entry.2005620554" placeholder="Ravi Kumar" required>
+          </div>
+          <div class="form-group">
+            <label>Phone Number *</label>
+            <input type="tel" name="entry.1045781291" placeholder="+91 98765 43210" required>
+          </div>
         </div>
         <div class="form-group">
-          <label>Phone Number</label>
-          <input type="tel" placeholder="+91 98765 43210">
+          <label>Email Address *</label>
+          <input type="email" name="entry.1065046570" placeholder="you@email.com" required>
         </div>
+        <div class="form-group">
+          <label>Service Required *</label>
+          <select name="entry.1166974658" required>
+            <option value="">Select a service...</option>
+            <option value="Academic Projects">Academic Projects</option>
+            <option value="Website Services">Website Services</option>
+            <option value="E-Commerce Website">E-Commerce Website</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message *</label>
+          <textarea name="entry.839337160" placeholder="Briefly describe what you need..." required></textarea>
+        </div>
+        <button type="submit" class="btn-primary" id="submitBtn" style="width:100%; padding:14px 0; font-size:1rem;">
+          Send Message →
+        </button>
+      </form>
+
+      <!-- Success message (hidden by default) -->
+      <div id="successMsg" style="display:none; text-align:center; padding:40px 20px;">
+        <div style="font-size:3rem; margin-bottom:16px;">✅</div>
+        <h3 style="font-family:'Syne',sans-serif; font-size:1.3rem; margin-bottom:10px;">Message Sent!</h3>
+        <p style="color:var(--muted); font-size:0.9rem;">We'll get back to you within 24 hours.</p>
+        <button onclick="resetForm()" class="btn-secondary" style="margin-top:24px; padding:10px 28px; cursor:pointer; border:none;">Send Another →</button>
       </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" placeholder="you@email.com">
-      </div>
-      <div class="form-group">
-        <label>Service Required</label>
-        <select>
-          <option value="">Select a service...</option>
-          <option>Academic Project – BCA</option>
-          <option>Academic Project – BSc</option>
-          <option>Academic Project – MCA</option>
-          <option>Academic Project – BE / BTech</option>
-          <option>Website for School / College</option>
-          <option>Website for Hotel / Restaurant</option>
-          <option>Website for Small Business</option>
-          <option>E-Commerce Website</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Project Details</label>
-        <textarea placeholder="Briefly describe what you need..."></textarea>
-      </div>
-      <button class="btn-primary" style="width:100%; padding:14px 0; font-size:1rem;" onclick="handleSubmit()">
-        Send Message →
-      </button>
     </div>
   </div>
 </section>
@@ -1351,16 +1364,25 @@
     nav.style.boxShadow = window.scrollY > 20 ? '0 4px 40px rgba(0,0,0,0.4)' : 'none';
   });
 
-  // Form submit
-  function handleSubmit() {
-    const btn = event.target;
-    btn.textContent = ' Message Sent!';
-    btn.style.background = 'linear-gradient(135deg, #16a34a, #22c55e)';
+  // Google Form submit handler
+  function handleSubmit(e) {
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    btn.style.opacity = '0.7';
+
     setTimeout(() => {
-      btn.textContent = 'Send Message ';
-      btn.style.background = '';
-    }, 3000);
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    }, 1000);
   }
-</script>
-</body>
-</html>
+
+  function resetForm() {
+    document.getElementById('contactForm').reset();
+    document.getElementById('contactForm').style.display = 'block';
+    document.getElementById('successMsg').style.display = 'none';
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Send Message →';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  }
